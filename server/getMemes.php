@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'memesdb';
 $user = 'root';
-$pass = '';
+$pass = 'root';
 $db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
 $meme1 = array('name' => '', 'vin' => false);

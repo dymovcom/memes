@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		})
 			.then(response => response.text())
-			.then(data => console.log(data))
+			.then(data => console.log(data));
 		getMemes();
 	}
 
