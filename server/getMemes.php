@@ -2,31 +2,27 @@
 $host = 'localhost';
 $dbname = 'memesdb';
 $user = 'root';
-$pass = 'root';
+$pass = '';
 $db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
-function GetMemes()
-{
-	$meme1 = array('name' => '', 'vin' => false);
-	$meme2 = array('name' => '', 'vin' => false);
-	
-	$sql = "SELECT * FROM memes";
-	global $db;
-	$result = $db->query($sql);
-	$memes = $result->fetchAll(PDO::FETCH_ASSOC);
-	$count = count($memes);
+$meme1 = array('name' => '', 'vin' => false);
+$meme2 = array('name' => '', 'vin' => false);
 
-	do {
-		$meme1['name'] = $memes[rand(0, $count - 1)]['name'];
-		$meme2['name'] = $memes[rand(0, $count - 1)]['name'];
-	} while ($meme1['name'] == $meme2['name']);
+$sql = "SELECT * FROM memes";
+$result = $db->query($sql);
+$memes = $result->fetchAll(PDO::FETCH_ASSOC);
+$count = count($memes);
 
-	return array('left' => $meme1, 'right' => $meme2);
-}
+do {
+	$meme1['name'] = $memes[rand(0, $count - 1)]['name'];
+	$meme2['name'] = $memes[rand(0, $count - 1)]['name'];
+} while ($meme1['name'] == $meme2['name']);
 
-echo "<pre>";
-var_dump(GetMemes());
-echo "</pre>";
+echo json_encode(array('left' => $meme1, 'right' => $meme2), JSON_UNESCAPED_UNICODE);
+
+// echo "<pre>";
+// var_dump(GetMemes());
+// echo "</pre>";
 // GetMemes();
 
 
