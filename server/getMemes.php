@@ -13,15 +13,15 @@ $result = $db->query($sql);
 $memes = $result->fetchAll(PDO::FETCH_ASSOC);
 $count = count($memes);
 
-
+// echo "<pre>";
+// var_dump($memes);
+// echo "</pre>";
 do {
 	$r1 = rand(0, $count - 1);
 	$r2 = rand(0, $count - 1);
 } while ($r1 == $r2);
 
-// echo "<pre>";
-// var_dump($r1);
-// echo "</pre>";
+
 $meme1['name'] 	= $memes[$r1]['name'];
 $meme1['elo'] 	= $memes[$r1]['elo'];
 $meme1['click'] = $memes[$r1]['click'];

@@ -69,12 +69,14 @@ $format = str_replace('jpeg', 'jpg', $extension);
 
 if(copy($filePath, '../img/memes/' . $name . $format)) {
 	$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 50, '2020-06-26', 0, 1)";
+	// echo "<pre>";
+	// var_dump($sql);
+	// echo "</pre>";
 	$result = $db->prepare($sql);
 	$result->execute();
 	// $info = $db->errorInfo();
-	// if ($info != '00000') {
-	// 	print_r($info);
-	// }
+	// print_r($info);
+	
 	echo "Файл успешно загружен!";
 } else {
 	echo "Ошибка при загрузке файла!";
