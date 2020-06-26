@@ -1,5 +1,11 @@
 <?php
 
+$host = 'localhost';
+$dbname = 'memesdb';
+$user = 'root';
+$pass = '';
+$db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
+
 // Перезапишем переменные для удобства
 $filePath  = $_FILES['upload']['tmp_name'];
 $errorCode = $_FILES['upload']['error'];
@@ -61,7 +67,19 @@ $extension = image_type_to_extension($image[2]);
 // Сократим .jpeg до .jpg
 $format = str_replace('jpeg', 'jpg', $extension);
 
-copy($filePath, '../img/memes/' . $name . $format);
+if(copy($filePath, '../img/memes/' . $name . $format)) {
+	$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 50, '2020-06-26', 0, 1)";
+	$result = $db->prepare($sql);
+	$result->execute();
+	// $info = $db->errorInfo();
+	// if ($info != '00000') {
+	// 	print_r($info);
+	// }
+	echo "Файл успешно загружен!";
+} else {
+	echo "Ошибка при загрузке файла!";
+}
+
 
 // echo "<pre>";
 // var_dump($format);

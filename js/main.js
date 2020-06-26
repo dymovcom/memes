@@ -3,7 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	const
 		memesImage = document.querySelectorAll('p'),
 		left = document.querySelector('#left'),
-		right = document.querySelector('#right');
+		right = document.querySelector('#right'),
+		formLoadedFile = document.querySelector('#formLoadedFile');
 	let memes = {};
 
 	function getMemes() {
@@ -28,6 +29,17 @@ document.addEventListener('DOMContentLoaded', () => {
 			.then(data => console.log(data));
 		getMemes();
 	}
+
+	formLoadedFile.addEventListener('submit', (e) => {
+		e.preventDefault();
+
+		fetch('server/fileLoad.php', {
+			method: 'POST',
+			body: new FormData(formLoadedFile)
+		}).then(response => response.text())
+			.then(data => console.log(data))
+			.finally(formLoadedFile.reset());
+	});
 
 	memesImage.forEach(item => {
 		item.addEventListener('click', () => {
