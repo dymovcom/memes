@@ -35,6 +35,8 @@ function getRatingElo($ratingA, $ratingB, $result, $noob){
 	return round($resultRatingA);
 }
 
+
+
 UpdateMeme($memes['left'], $db);
 echo var_dump($memes['left']);
 

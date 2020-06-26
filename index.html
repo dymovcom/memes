@@ -4,12 +4,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
-	<!-- <link rel="stylesheet" href="css/style.css"> -->
+	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<p id="left">text1</p>
-	<p id="right">text2</p>
+	<!-- <p id="left">text1</p> -->
+	<!-- <p id="right">text2</p> -->
 	
+	<div class="wrapp">
+		<div class="meme" id="left"></div>
+		<div class="meme" id="right"></div>
+	</div>
 	<hr>
 	<form id="formLoadedFile" action="server/fileLoad.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="upload">

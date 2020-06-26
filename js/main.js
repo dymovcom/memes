@@ -1,7 +1,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 	const
-		memesImage = document.querySelectorAll('p'),
+		memesImage = document.querySelectorAll('.meme'),
 		left = document.querySelector('#left'),
 		right = document.querySelector('#right'),
 		formLoadedFile = document.querySelector('#formLoadedFile');
@@ -12,8 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
 			.then(response => response.json())
 			.then(json => {
 				memes = json;
-				left.textContent = json.left.name;
-				right.textContent = json.right.name;
+
+				const
+					imgLeft = document.createElement('img'),
+					imgRight = document.createElement('img');
+				
+					// left.textContent = json.left.name;
+					// right.textContent = json.right.name;
+				imgLeft.src = 'img/memes/' + json.left.name;
+				imgRight.src = 'img/memes/' + json.right.name;
+
+				left.append(imgLeft);
+				right.append(imgRight);
 			});
 	}
 
@@ -27,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 			.then(response => response.text())
 			.then(data => console.log(data));
+		
+		document.querySelectorAll('.meme img').forEach(item => {
+			item.remove();
+		});
 		getMemes();
 	}
 

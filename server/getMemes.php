@@ -5,8 +5,8 @@ $user = 'root';
 $pass = '';
 $db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
-$meme1 = array('name' => '', 'elo' => 0, 'click' => 0, 'vin' => false);
-$meme2 = array('name' => '', 'elo' => 0, 'click' => 0, 'vin' => false);
+$meme1 = array('id' => 0, 'name' => '', 'elo' => 0, 'click' => 0, 'vin' => false);
+$meme2 = array('id' => 0, 'name' => '', 'elo' => 0, 'click' => 0, 'vin' => false);
 
 $sql = "SELECT * FROM memes";
 $result = $db->query($sql);
@@ -22,9 +22,11 @@ do {
 } while ($r1 == $r2);
 
 
+$meme1['id'] 	= $memes[$r1]['id'];
 $meme1['name'] 	= $memes[$r1]['name'];
 $meme1['elo'] 	= $memes[$r1]['elo'];
 $meme1['click'] = $memes[$r1]['click'];
+$meme2['id'] 	= $memes[$r2]['id'];
 $meme2['name'] 	= $memes[$r2]['name'];
 $meme2['elo'] 	= $memes[$r2]['elo'];
 $meme2['click'] = $memes[$r2]['click'];
