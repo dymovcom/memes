@@ -2,7 +2,7 @@
 $host = 'localhost';
 $dbname = 'memesdb';
 $user = 'root';
-$pass = 'root';
+$pass = '';
 $db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
 $memes = json_decode(file_get_contents("php://input"), true);

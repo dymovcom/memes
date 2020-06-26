@@ -1,10 +1,8 @@
 <?php
 
-
 // Перезапишем переменные для удобства
 $filePath  = $_FILES['upload']['tmp_name'];
 $errorCode = $_FILES['upload']['error'];
-
 // Проверим на ошибки
 if ($errorCode !== UPLOAD_ERR_OK || !is_uploaded_file($filePath)) {
 
@@ -63,12 +61,8 @@ $extension = image_type_to_extension($image[2]);
 // Сократим .jpeg до .jpg
 $format = str_replace('jpeg', 'jpg', $extension);
 
-// Переместим картинку с новым именем и расширением в папку /pics
+copy($filePath, '../img/memes/' . $name . $format);
+
 // echo "<pre>";
-// var_dump(__DIR__ . '\\img\memes\\' . $name . $format);
+// var_dump($format);
 // echo "</pre>";
-if (!file_put_contents(__DIR__ . $name . $format, $raw)) {
-	die('При сохранении изображения на диск произошла ошибка.');
-} else {
-	echo "Все ок!";
-}
