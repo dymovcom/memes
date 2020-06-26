@@ -68,7 +68,7 @@ $extension = image_type_to_extension($image[2]);
 $format = str_replace('jpeg', 'jpg', $extension);
 
 if(copy($filePath, '../img/memes/' . $name . $format)) {
-	$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 50, '2020-06-26', 0, 1)";
+	$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 500, '2020-06-26', 0, 1)";
 	// echo "<pre>";
 	// var_dump($sql);
 	// echo "</pre>";
