@@ -20,6 +20,21 @@ function UpdateMeme($arr, $db)
 	$result->execute();
 }
 
+function getRatingElo($ratingA, $ratingB, $result, $noob){
+	$Ea = 1 / (1 + pow(10, ($ratingB - $ratingA) / 400));
+	if ($ratingA >= 2400) $K = 10;
+	if ($ratingA < 2400) $K = 20;
+	if ($noob == 1) $K = 40;
+
+	if ($result == 1) $Sa = 1;
+	if ($result == 0) $Sa = 0.5;
+	if ($result == -1) $Sa = 0;
+
+	$resultRatingA = $ratingA + $K * ($Sa - $Ea);
+
+	return round($resultRatingA);
+}
+
 UpdateMeme($memes['left'], $db);
 echo var_dump($memes['left']);
 
