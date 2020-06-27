@@ -8,22 +8,17 @@ document.addEventListener('DOMContentLoaded', () => {
 	let memes = {};
 
 	function getMemes() {
+		
 		fetch('server/getMemes.php')
 			.then(response => response.json())
 			.then(json => {
-				memes = json;
-
 				const
-					imgLeft = document.createElement('img'),
-					imgRight = document.createElement('img');
+					imgLeft = document.querySelector('#leftImg'),
+					imgRight = document.querySelector('#rightImg');
+				memes = json;
 				
-					// left.textContent = json.left.name;
-					// right.textContent = json.right.name;
 				imgLeft.src = 'img/memes/' + json.left.name;
 				imgRight.src = 'img/memes/' + json.right.name;
-
-				left.append(imgLeft);
-				right.append(imgRight);
 			});
 	}
 
@@ -37,10 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		})
 			.then(response => response.text())
 			.then(data => console.log(data));
-		
-		document.querySelectorAll('.meme img').forEach(item => {
-			item.remove();
-		});
+	
 		getMemes();
 	}
 
@@ -57,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	memesImage.forEach(item => {
 		item.addEventListener('click', () => {
+			// getMemes();
 			if (item.id === 'left') {
 				memes.left.vin = true;
 			} else if (item.id === 'right') {
