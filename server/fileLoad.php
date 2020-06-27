@@ -62,13 +62,13 @@ foreach ($_FILES['upload'] as $k => $v) {
 
 	// Зададим ограничения для картинок
 	$limitBytes  = 1024 * 1024 * 5;
-	$limitWidth  = 1280;
-	$limitHeight = 768;
+	$limitWidth  = 1920;
+	$limitHeight = 1080;
 
 	// Проверим нужные параметры
 	if (filesize($filePath) > $limitBytes) die('Размер изображения не должен превышать 5 Мбайт.');
-	if ($image[1] > $limitHeight)          die('Высота изображения не должна превышать 768 точек.');
-	if ($image[0] > $limitWidth)           die('Ширина изображения не должна превышать 1280 точек.');
+	if ($image[1] > $limitHeight)          die('Высота изображения не должна превышать 1080 точек.');
+	if ($image[0] > $limitWidth)           die('Ширина изображения не должна превышать 1920 точек.');
 
 	// Сгенерируем новое имя файла на основе MD5-хеша
 	$name = md5_file($filePath);
