@@ -6,11 +6,23 @@ $user = 'root';
 $pass = '';
 $db = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
 
-// Перезапишем переменные для удобства
-$filePath  = $_FILES['upload']['tmp_name'];
-$errorCode = $_FILES['upload']['error'];
-// Проверим на ошибки
-if ($errorCode !== UPLOAD_ERR_OK || !is_uploaded_file($filePath)) {
+// Изменим структуру $_FILES
+foreach($_FILES['upload'] as $key => $value) {
+	foreach($value as $k => $v) {
+			$_FILES['upload'][$k][$key] = $v;
+	}
+
+    // Удалим старые ключи
+    unset($_FILES['upload'][$key]);
+}
+
+// Загружаем все картинки по порядку
+foreach ($_FILES['upload'] as $k => $v) {
+	// Загружаем по одному файлу
+	$filePath  = $_FILES['upload'][$k]['tmp_name'];
+	$errorCode = $_FILES['upload'][$k]['error'];
+
+	if ($errorCode !== UPLOAD_ERR_OK || !is_uploaded_file($filePath)) {
 
     // Массив с названиями ошибок
     $errorMessages = [
@@ -31,56 +43,64 @@ if ($errorCode !== UPLOAD_ERR_OK || !is_uploaded_file($filePath)) {
 
     // Выведем название ошибки
     die($outputMessage);
+	}
+
+	// Создадим ресурс FileInfo
+	$fi = finfo_open(FILEINFO_MIME_TYPE);
+
+	// Получим MIME-тип
+	$mime = (string) finfo_file($fi, $filePath);
+
+	// Закроем ресурс
+	finfo_close($fi);
+
+	// Проверим ключевое слово image (image/jpeg, image/png и т. д.)
+	if (strpos($mime, 'image') === false) die('Можно загружать только изображения.');
+
+	// Результат функции запишем в переменную
+	$image = getimagesize($filePath);
+
+	// Зададим ограничения для картинок
+	$limitBytes  = 1024 * 1024 * 5;
+	$limitWidth  = 1280;
+	$limitHeight = 768;
+
+	// Проверим нужные параметры
+	if (filesize($filePath) > $limitBytes) die('Размер изображения не должен превышать 5 Мбайт.');
+	if ($image[1] > $limitHeight)          die('Высота изображения не должна превышать 768 точек.');
+	if ($image[0] > $limitWidth)           die('Ширина изображения не должна превышать 1280 точек.');
+
+	// Сгенерируем новое имя файла на основе MD5-хеша
+	$name = md5_file($filePath);
+
+	// Сгенерируем расширение файла на основе типа картинки
+	$extension = image_type_to_extension($image[2]);
+
+	// Сократим .jpeg до .jpg
+	$format = str_replace('jpeg', 'jpg', $extension);
+
+	if(copy($filePath, '../img/memes/' . $name . $format)) {
+		$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 500, '2020-06-26', 0, 1)";
+		// echo "<pre>";
+		// var_dump($sql);
+		// echo "</pre>";
+		$result = $db->prepare($sql);
+		$result->execute();
+		// $info = $db->errorInfo();
+		// print_r($info);
+		
+		echo "Файл успешно загружен!\n";
+	} else {
+		echo "Ошибка при загрузке файла!";
+	}
 }
 
-// Создадим ресурс FileInfo
-$fi = finfo_open(FILEINFO_MIME_TYPE);
 
-// Получим MIME-тип
-$mime = (string) finfo_file($fi, $filePath);
+// Перезапишем переменные для удобства
+// $filePath  = $_FILES['upload']['tmp_name'];
+// $errorCode = $_FILES['upload']['error'];
+// Проверим на ошибки
 
-// Закроем ресурс
-finfo_close($fi);
-
-// Проверим ключевое слово image (image/jpeg, image/png и т. д.)
-if (strpos($mime, 'image') === false) die('Можно загружать только изображения.');
-
-// Результат функции запишем в переменную
-$image = getimagesize($filePath);
-
-// Зададим ограничения для картинок
-$limitBytes  = 1024 * 1024 * 5;
-$limitWidth  = 1280;
-$limitHeight = 768;
-
-// Проверим нужные параметры
-if (filesize($filePath) > $limitBytes) die('Размер изображения не должен превышать 5 Мбайт.');
-if ($image[1] > $limitHeight)          die('Высота изображения не должна превышать 768 точек.');
-if ($image[0] > $limitWidth)           die('Ширина изображения не должна превышать 1280 точек.');
-
-// Сгенерируем новое имя файла на основе MD5-хеша
-$name = md5_file($filePath);
-
-// Сгенерируем расширение файла на основе типа картинки
-$extension = image_type_to_extension($image[2]);
-
-// Сократим .jpeg до .jpg
-$format = str_replace('jpeg', 'jpg', $extension);
-
-if(copy($filePath, '../img/memes/' . $name . $format)) {
-	$sql = "INSERT INTO memes (name, elo, addDate, click, author) VALUES ('" . $name . $format . "', 500, '2020-06-26', 0, 1)";
-	// echo "<pre>";
-	// var_dump($sql);
-	// echo "</pre>";
-	$result = $db->prepare($sql);
-	$result->execute();
-	// $info = $db->errorInfo();
-	// print_r($info);
-	
-	echo "Файл успешно загружен!";
-} else {
-	echo "Ошибка при загрузке файла!";
-}
 
 
 // echo "<pre>";

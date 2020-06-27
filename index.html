@@ -7,9 +7,7 @@
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-	<!-- <p id="left">text1</p> -->
-	<!-- <p id="right">text2</p> -->
-	
+
 	<div class="wrapp">
 		<div class="meme" id="left">
 			<img src="img/meme.jpg" alt="meme1" class="meme__image" id="leftImg">
@@ -18,9 +16,17 @@
 			<img src="img/meme.jpg" alt="meme2" class="meme__image" id="rightImg">
 		</div>
 	</div>
+
 	<hr>
-	<form id="formLoadedFile" action="server/fileLoad.php" method="post" enctype="multipart/form-data">
+
+	<!-- <form id="formLoadedFile" action="server/fileLoad.php" method="post" enctype="multipart/form-data">
 		<input type="file" name="upload">
+		<button id="loadFile">Загрузить</button>
+	</form> -->
+
+	<form id="formLoadedFile" action="server/fileLoad.php" method="post" enctype="multipart/form-data">
+		<!-- <textarea name="upload"></textarea> -->
+		<input type="file" name="upload[]" multiple>
 		<button id="loadFile">Загрузить</button>
 	</form>
 
